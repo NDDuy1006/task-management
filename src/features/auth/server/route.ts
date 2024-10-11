@@ -2,29 +2,72 @@ import { z } from "zod"
 import { Hono } from "hono"
 import { zValidator } from "@hono/zod-validator"
 import { loginSchema, registerSchema } from "../schemas"
+import { createAdminClient } from "@/lib/appwrite"
+import { ID } from "node-appwrite"
+import { deleteCookie, setCookie } from "hono/cookie"
+import { AUTH_COOKIE } from "@/features/constants"
 
 
 const app = new Hono()
   .post(
     "/login",
     zValidator("json", loginSchema),
-    (c) => {
+    async (c) => {
       const { email, password } = c.req.valid("json")
 
-      console.log({ email, password });
+      const { account } = await createAdminClient()
+      const session = await account.createEmailPasswordSession(
+        email,
+        password
+      )
+
+      setCookie(c, AUTH_COOKIE, session.secret, {
+        path: "/",
+        httpOnly: true,
+        secure: true,
+        sameSite: "strict",
+        maxAge: 60 * 60 * 24 * 30
+      })
       
-      return c.json({ email, password })
+      return c.json({ success: true })
     }
 )
   .post(
     "/register",
     zValidator("json", registerSchema),
+    async (c) => {
+      const { name, email, password } = c.req.valid("json")
+
+      const { account } = await createAdminClient()
+      const user = await account.create(
+        ID.unique(),
+        email,
+        password,
+        name,
+      )
+
+      const session = await account.createEmailPasswordSession(
+        email,
+        password
+      )
+
+      setCookie(c, AUTH_COOKIE, session.secret, {
+        path: "/",
+        httpOnly: true,
+        secure: true,
+        sameSite: "strict",
+        maxAge: 60 * 60 * 24 * 30
+      })
+
+      return c.json({ success: true })
+    }
+  )
+  .post(
+    "/logout",
     (c) => {
-      const { firstname, lastname, email, password } = c.req.valid("json")
+      deleteCookie(c, AUTH_COOKIE)
 
-      console.log({ firstname, lastname, email, password });
-
-      return c.json({ firstname, lastname, email, password })
+      return c.json({ success: true })
     }
   )
 

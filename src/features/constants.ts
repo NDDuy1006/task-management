@@ -1,0 +1,1 @@
+export const AUTH_COOKIE = "my-auth-key-ndd-session"
