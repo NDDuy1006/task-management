@@ -267,7 +267,7 @@ export const EditWorkspaceForm = ({ onCancel, initialValues }: EditWorkSpaceForm
                   size="lg"
                   disabled={isPending}
                 >
-                  Save Changes
+                  Apply changes
                 </Button>
               </div>
             </form>
@@ -323,7 +323,7 @@ export const EditWorkspaceForm = ({ onCancel, initialValues }: EditWorkSpaceForm
               disabled={isPending || isDeletingWorkspace}
               onClick={handleDelete}
             >
-              Delete Workspace
+              Delete workspace
             </Button>
           </div>
         </CardContent>

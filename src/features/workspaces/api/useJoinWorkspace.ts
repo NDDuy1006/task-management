@@ -3,15 +3,10 @@ import { InferRequestType, InferResponseType } from "hono"
 import { toast } from "sonner"
 import { client } from "@/lib/rpc"
 
-type ResponseType = InferResponseType<
-  typeof client.api.workspaces[":workspaceId"]["$patch"],
-  200
->
-type RequestType = InferRequestType<
-  typeof client.api.workspaces[":workspaceId"]["$patch"]
->
+type ResponseType = InferResponseType<typeof client.api.workspaces[":workspaceId"]["join"]["$post"], 200>
+type RequestType = InferRequestType<typeof client.api.workspaces[":workspaceId"]["join"]["$post"]>
 
-export const useUpdateWorkspace = () => {
+export const useJoinWorkspace = () => {
   const queryClient = useQueryClient()
   
   const mutation = useMutation<
@@ -19,22 +14,22 @@ export const useUpdateWorkspace = () => {
     Error,
     RequestType
   >({
-    mutationFn: async ({ form, param }) => {
-      const response = await client.api.workspaces[":workspaceId"]["$patch"]({ form, param })
+    mutationFn: async ({ param, json }) => {
+      const response = await client.api.workspaces[":workspaceId"]["join"]["$post"]({ param, json })
 
       if (!response.ok) {
-        throw new Error("Failed to update workspace")
+        throw new Error("Failed to join workspace")
       }
 
       return await response.json()
     },
     onSuccess: ({ data }) => {
-      toast.success("Workspace updated!")
+      toast.success("Joined workspace!")
       queryClient.invalidateQueries({ queryKey: ["workspaces"] })
       queryClient.invalidateQueries({ queryKey: ["workspaces", data.$id] })
     },
     onError: () => {
-      toast.error("Failed to update workspace")
+      toast.error("Failed to join workspace")
     }
   })
 
