@@ -45,6 +45,7 @@ export const sessionMiddleware = createMiddleware<AdditionalContext>(
     
     const user = await account.get()
 
+    // set account, databases, storage, user to the context
     c.set("account", account)
     c.set("databases", databases)
     c.set("storage", storage)

@@ -75,6 +75,7 @@ const app = new Hono()
     "/logout",
     sessionMiddleware,
     async (c) => {
+      // get the account that was set in the middleware
       const account = c.get("account")
 
       deleteCookie(c, AUTH_COOKIE)

@@ -39,7 +39,7 @@ export const WorkspaceSwitcher = () => {
             <SelectItem key={item.$id} value={item.$id}>
               <div className="flex justify-start items-center gap-3 font-medium">
                 <WorkspaceAvatar name={item.name} image={item.imageUrl} />
-                <span className="truncate">{item.name}</span>
+                <span className="truncate max-w-[300px] lg:max-w-[128px]">{item.name}</span>
               </div>
             </SelectItem>
           ))}

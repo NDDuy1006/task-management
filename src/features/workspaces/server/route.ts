@@ -12,6 +12,10 @@ import { WorkspaceType } from "../types"
 
 const app = new Hono()
   .get("/", sessionMiddleware, async (c) => {
+    // FETCH THOSE WORKSPACES THAT CURRENT USER IS A MEMBER OF ONLY
+    // fetch all records of the member table whose ids match the current user's id
+    // fetch all workspace ids associated with member's id
+
     const user = c.get("user")
     const databases = c.get("databases")
 
