@@ -11,6 +11,7 @@ export const useGetProjects = ({
   const query = useQuery({
     queryKey: ["projects", workspaceId],
     queryFn: async () => {
+      console.log("Workspace ID: ", workspaceId)
       const response = await client.api.projects.$get({ query: {workspaceId} })
 
       if (!response.ok) {
