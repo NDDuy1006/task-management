@@ -1,3 +1,5 @@
+"use client"
+
 import { DottedSeparator } from "@/components/DottedSeparator"
 import { Button } from "@/components/ui/button"
 import {
@@ -7,8 +9,11 @@ import {
   TabsTrigger
  } from "@/components/ui/tabs"
 import { PlusIcon } from "lucide-react"
+import { useCreateTaskModal } from "../hooks/useCreateTaskModal"
 
 export const TaskViewSwitcher = () => {
+  const { open } = useCreateTaskModal();
+
   return (
     <Tabs
       className="flex-1 w-full border rounded-lg"
@@ -36,6 +41,7 @@ export const TaskViewSwitcher = () => {
             </TabsTrigger>
           </TabsList>
           <Button
+            onClick={open}
             size="sm"
             className="w-full lg:w-auto"
           >
