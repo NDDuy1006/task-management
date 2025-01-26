@@ -56,7 +56,7 @@ const app = new Hono()
 
       if (projectId) {
         console.log("projectId", projectId)
-        query.push(Query.equal("projectI", projectId))
+        query.push(Query.equal("projectId", projectId))
       }
 
       if (status) {
