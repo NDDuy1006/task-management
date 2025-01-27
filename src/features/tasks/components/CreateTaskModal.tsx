@@ -2,7 +2,7 @@
 
 import { Modal } from "@/components/Modal"
 import { useCreateTaskModal } from "../hooks/useCreateTaskModal"
-import { CreateTaskModalWrapper } from "./CreateTaskModalWrapper"
+import { CreateTaskModalWrapper } from "./CreateTaskFormWrapper"
 
 export const CreateTaskModal = () => {
   const { isOpen, setIsOpen, close } = useCreateTaskModal()

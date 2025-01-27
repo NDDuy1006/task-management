@@ -8,7 +8,7 @@ export enum TaskStatus {
   DONE = "DONE"
 }
 
-export type Task = Models.Document & {
+export type TaskType = Models.Document & {
   name: string;
   status: TaskStatus;
   assigneeId: string;

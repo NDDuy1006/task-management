@@ -5,10 +5,11 @@ import {
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
 import { ExternalLinkIcon, PencilIcon, TextSearch, TrashIcon } from "lucide-react";
-import { useDeleteTask } from "../hooks/useDeleteTask";
+import { useDeleteTask } from "../api/useDeleteTask";
 import { useConfirm } from "@/hooks/useConfirm";
 import { useRouter } from "next/navigation";
 import { useWorkspaceId } from "@/features/workspaces/hooks/useWorkspaceId";
+import { useEditTaskModal } from "../hooks/useEditTaskModal";
 
 interface TaskActionsProps {
   id: string;
@@ -24,6 +25,8 @@ export const TaskActions = ({
   const workspaceId = useWorkspaceId()
 
   const router = useRouter()
+
+  const {open} = useEditTaskModal()
 
   const {
     mutate,
@@ -71,7 +74,7 @@ export const TaskActions = ({
             Task Details
           </DropdownMenuItem>
           <DropdownMenuItem
-            onClick={() => { }}
+            onClick={() => open(id)}
             disabled={false}
             className="font-medium p-[10px] hover:cursor-pointer"
           >
