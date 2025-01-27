@@ -33,6 +33,7 @@ import { TaskStatus } from "../types"
 import { ProjectAvatar } from "@/features/projects/components/ProjectAvatar"
 
 interface CreateTaskFormProps {
+  taskStatus: TaskStatus | null;
   onCancel?: () => void;
   projectOptions: {
     id: string,
@@ -46,6 +47,7 @@ interface CreateTaskFormProps {
 }
 
 export const CreateTaskForm = ({
+  taskStatus,
   onCancel,
   projectOptions,
   memberOptions
@@ -56,7 +58,8 @@ export const CreateTaskForm = ({
   const form = useForm<z.infer<typeof createTaskSchema>>({
     resolver: zodResolver(createTaskSchema.omit({ workspaceId: true })),
     defaultValues: {
-      workspaceId
+      workspaceId,
+      status: taskStatus ?? undefined
     }
   })
 

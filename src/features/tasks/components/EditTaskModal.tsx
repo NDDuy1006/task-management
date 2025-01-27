@@ -1,7 +1,6 @@
 "use client"
 
 import { Modal } from "@/components/Modal"
-import { CreateTaskModalWrapper } from "./CreateTaskFormWrapper"
 import { useEditTaskModal } from "../hooks/useEditTaskModal"
 import { EditTaskFormWrapper } from "./EditTaskFormWrapper"
 
