@@ -15,8 +15,8 @@ import { useWorkspaceId } from "@/features/workspaces/hooks/useWorkspaceId"
 import { useQueryState } from "nuqs"
 import { DataFilters } from "./DataFilter"
 import { useTaskFilters } from "../hooks/useTaskFilters"
-import { columns } from "./columns"
 import { DataTable } from "./DataTable"
+import { columns } from "./Columns"
 
 export const TaskViewSwitcher = () => {
   const [view, setView] = useQueryState("task-view", {
