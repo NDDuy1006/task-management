@@ -1,6 +1,7 @@
 import { Models } from "node-appwrite";
 
 export enum TaskStatus {
+  NULL = "NULL",
   BACKLOG = "BACKLOG",
   TODO = "TODO",
   IN_PROGRESS = "IN_PROGRESS",

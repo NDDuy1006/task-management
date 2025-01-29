@@ -32,6 +32,7 @@ export const DataKanban = ({ data }: DataKanbanProps) => {
       [TaskStatus.IN_PROGRESS]: [],
       [TaskStatus.IN_REVIEW]: [],
       [TaskStatus.DONE]: [],
+      [TaskStatus.NULL]: []
     }
 
     data.forEach((task) => {

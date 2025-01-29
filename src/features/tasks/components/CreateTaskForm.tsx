@@ -33,6 +33,7 @@ import { TaskStatus } from "../types"
 import { ProjectAvatar } from "@/features/projects/components/ProjectAvatar"
 
 interface CreateTaskFormProps {
+  taskStatus?: TaskStatus;
   onCancel?: () => void;
   projectOptions: {
     id: string,
@@ -46,6 +47,7 @@ interface CreateTaskFormProps {
 }
 
 export const CreateTaskForm = ({
+  taskStatus,
   onCancel,
   projectOptions,
   memberOptions
@@ -53,11 +55,18 @@ export const CreateTaskForm = ({
   const workspaceId = useWorkspaceId()
   const { mutate, isPending } = useCreateTask()
 
-  const form = useForm<z.infer<typeof createTaskSchema>>({
-    resolver: zodResolver(createTaskSchema.omit({ workspaceId: true })),
-    defaultValues: {
-      workspaceId
-    }
+  const form = taskStatus === TaskStatus.NULL
+    ? useForm<z.infer<typeof createTaskSchema>>({
+      resolver: zodResolver(createTaskSchema.omit({ workspaceId: true })),
+      defaultValues: {
+        workspaceId,
+      }
+  }) : useForm<z.infer<typeof createTaskSchema>>({
+      resolver: zodResolver(createTaskSchema.omit({ workspaceId: true })),
+      defaultValues: {
+        workspaceId,
+        status: taskStatus
+      }
   })
 
   const onSubmit = (values: z.infer<typeof createTaskSchema>) => {
@@ -68,6 +77,7 @@ export const CreateTaskForm = ({
         //TODO: redirect to new task
       }
     })
+    
   }
 
   return (

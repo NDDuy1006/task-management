@@ -49,7 +49,7 @@ export const CreateWorkspaceForm = ({ onCancel }: CreateWorkSpaceFormProps) => {
     mutate({ form: finalValues }, {
       onSuccess: ({ data }) => {
         form.reset();
-        router.push(`/workspaces/${data.$id}`)
+        // router.push(`/workspaces/${data.$id}`)
       }
     })
   }

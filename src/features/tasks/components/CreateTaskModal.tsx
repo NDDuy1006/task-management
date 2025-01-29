@@ -5,13 +5,20 @@ import { useCreateTaskModal } from "../hooks/useCreateTaskModal"
 import { CreateTaskModalWrapper } from "./CreateTaskFormWrapper"
 
 export const CreateTaskModal = () => {
-  const { isOpen, setIsOpen, close } = useCreateTaskModal()
+  const { isOpen, close, taskStatus } = useCreateTaskModal()
 
   return (
-    <Modal open={isOpen} onOpenChange={setIsOpen}>
-      <div>
-        <CreateTaskModalWrapper onCancel={close}/>
-      </div>
+    <Modal
+      open={isOpen}
+      onOpenChange={
+        (open) => {
+          if (!open) {
+            close()
+          }
+        }
+      }
+    >
+      <CreateTaskModalWrapper onCancel={close} taskStatus={taskStatus} />
     </Modal>
   )
 }

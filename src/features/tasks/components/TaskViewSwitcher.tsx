@@ -18,6 +18,7 @@ import { useTaskFilters } from "../hooks/useTaskFilters"
 import { DataTable } from "./DataTable"
 import { columns } from "./Columns"
 import { DataKanban } from "./DataKanban"
+import { TaskStatus } from "../types"
 
 export const TaskViewSwitcher = () => {
   const [view, setView] = useQueryState("task-view", {
@@ -71,7 +72,7 @@ export const TaskViewSwitcher = () => {
             </TabsTrigger>
           </TabsList>
           <Button
-            onClick={open}
+            onClick={() => open(TaskStatus.NULL)}
             size="sm"
             className="w-full lg:w-auto"
           >
