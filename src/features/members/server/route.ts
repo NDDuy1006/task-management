@@ -35,7 +35,7 @@ const app = new Hono()
         [Query.equal("workspaceId", workspaceId)]
       )
 
-      // use Promise.all here so that await can be used insode the .map method
+      // use Promise.all here so that await can be used inside the map method
       const populatedMembers = await Promise.all(
         members.documents.map(async (member) => {
           const user = await users.get(member.userId)

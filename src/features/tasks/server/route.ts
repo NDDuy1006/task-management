@@ -370,6 +370,7 @@ const app = new Hono()
         return c.json({ error: "Unauthorized" }, 401)
       }
 
+      // Promise.all so that await can be used inside the map method
       const updatedTasks = await Promise.all(
         tasks.map(async (task) => {
           const { $id, status, position } = task

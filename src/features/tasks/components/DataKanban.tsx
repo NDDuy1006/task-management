@@ -52,6 +52,7 @@ export const DataKanban = ({
     return initialTasks
   })
 
+  // refresh the received data(task) after every action 
   useEffect(() => {
     const newTasks: TasksState = {
       [TaskStatus.BACKLOG]: [],
@@ -88,8 +89,9 @@ export const DataKanban = ({
       // Shallow copy of the current tasks (all tasks)
       const newTasks = { ...prevTasks }
 
-      // safely remove the task from the source column
+      // create a shallow copy of task list at the source column
       const sourceColumn = [...newTasks[sourceStatus]]
+      // safely remove the task from the source column
       const [movedTask] = sourceColumn.splice(source.index, 1)
 
       // Create a new task object with potentially updated status
@@ -105,7 +107,7 @@ export const DataKanban = ({
       destColumn.splice(destination.index, 0, updatedMovedTask)
       newTasks[destStatus] = destColumn
 
-      // Prepare minimum update payloads
+      // Prepare minimum update payloads (all tasks that have been updated)
       updatePayload = []
 
       // Always update the moved task
@@ -115,10 +117,7 @@ export const DataKanban = ({
         position: Math.min((destination.index + 1) * 1000, 1_000_000)
       })
 
-      console.log("destination.index: ", destination.index);
-      
-
-      // Update positions for affected tasks in the destination column
+      // Update positions for affected tasks in the destination column according to their indices
       newTasks[destStatus].forEach((task, index) => {
         if (task && task.$id !== updatedMovedTask.$id) {
           const newPosition = Math.min((index + 1) * 1000, 1_000_000)
@@ -132,7 +131,7 @@ export const DataKanban = ({
         }
       })
 
-      // Update the positions of the source column
+      // Update the positions of the source column according to their indices
       if (sourceStatus !== destStatus) {
         newTasks[sourceStatus].forEach((task, index) => {
           if (task) {
@@ -150,7 +149,7 @@ export const DataKanban = ({
 
       return newTasks
     })
-
+    
     onChange(updatePayload)
   }, [onChange])
 
