@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { useCreateTaskModal } from "../hooks/useCreateTaskModal";
 
 interface KanbanColumnHeaderProps {
-  board: TaskStatus;
+  lane: TaskStatus;
   taskCount: number
 }
 
@@ -37,26 +37,26 @@ const statusIconMap: Record<TaskStatus, React.ReactNode> = {
   ),
 }
 
-export const KanbanColumnHeader = ({
-  board,
+export const KanbanLaneHeader = ({
+  lane,
   taskCount
 }: KanbanColumnHeaderProps) => {
   const { open } = useCreateTaskModal()
 
-  const icon = statusIconMap[board]
+  const icon = statusIconMap[lane]
 
   return (
     <div className="px-2 py-1.5 flex items-center justify-between">
       <div className="flex items-center gap-x-2">
         {icon}
         <h2 className="text-sm font-medium">
-          {snakeCaseToTitleCase(board)}
+          {snakeCaseToTitleCase(lane)}
         </h2>
         <div className="size-5 flex items-center justify-center rounded-md bg-neutral-200 text-xs text-neutral-700 font-medium">
           {taskCount}
         </div>
       </div>
-      <Button onClick={() => open(board)} variant="ghost" size="icon" className="size-5">
+      <Button onClick={() => open(lane)} variant="ghost" size="icon" className="size-5">
         <PlusIcon className="size-4 text-neutral-500"/>
       </Button>
     </div>

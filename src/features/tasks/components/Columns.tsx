@@ -2,7 +2,7 @@
 
 import { ArrowUpDown, MoreVertical } from "lucide-react"
 import {ColumnDef} from "@tanstack/react-table"
-import { Task } from "../types"
+import { TaskType } from "../types"
 import { Button } from "@/components/ui/button"
 import { ProjectAvatar } from "@/features/projects/components/ProjectAvatar"
 import { MemberAvatar } from "@/features/members/components/MemberAvatar"
@@ -11,7 +11,7 @@ import { Badge } from "@/components/ui/badge"
 import { snakeCaseToTitleCase } from "@/lib/utils"
 import { TaskActions } from "./TaskActions"
 
-export const columns: ColumnDef<Task>[] = [
+export const columns: ColumnDef<TaskType>[] = [
   {
     accessorKey: "name",
     header: ({ column }) => {

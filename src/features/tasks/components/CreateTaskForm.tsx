@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 "use client"
 
 import { useWorkspaceId } from "@/features/workspaces/hooks/useWorkspaceId"
