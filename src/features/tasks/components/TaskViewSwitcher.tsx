@@ -19,15 +19,30 @@ import { DataTable } from "./DataTable"
 import { columns } from "./Columns"
 import { DataKanban } from "./DataKanban"
 import { TaskStatus } from "../types"
-import { useCallback } from "react"
+import { useCallback, useEffect, useMemo } from "react"
 import { useBulkUpdateTasks } from "../api/useBulkUpdateTasks"
 import { DataCalendar } from "./DataCalendar"
+import { useGetMembers } from "@/features/members/api/useGetMembers"
 
-export const TaskViewSwitcher = () => {
+interface TaskViewSwitcherProps {
+  currentUserId?: string
+  defaultProjectId?: string
+  hideProjectFilter?: boolean
+}
+
+export const TaskViewSwitcher = ({
+  currentUserId,
+  defaultProjectId,
+  hideProjectFilter
+}: TaskViewSwitcherProps) => {
   const [view, setView] = useQueryState("task-view", {
     defaultValue: "table"
   })
 
+  const workspaceId = useWorkspaceId()
+
+  const { data: members, isLoading: isLoadingMembers } = useGetMembers({ workspaceId })
+  
   const [{
     status,
     assigneeId,
@@ -35,11 +50,18 @@ export const TaskViewSwitcher = () => {
     dueDate,
   }] = useTaskFilters()
 
-  const workspaceId = useWorkspaceId()
+  const currentMemberId = currentUserId
+   ? members?.documents.find((member) => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+      return member.userId === currentUserId
+    })?.$id
+    : undefined
+  
   const { data: tasks, isLoading: isLoadingTask } = useGetTasks({
     workspaceId,
-    projectId,
-    assigneeId,
+    // these properties make the fetch method call
+    projectId: defaultProjectId || projectId,
+    assigneeId: currentMemberId || assigneeId,
     status,
     dueDate
   })
@@ -95,9 +117,12 @@ export const TaskViewSwitcher = () => {
           </Button>
         </div>
         <DottedSeparator className="my-4" />
-          <DataFilters />
+        <DataFilters
+          hideProjectFilter={hideProjectFilter}
+          hideAssigneeFilter={!!currentMemberId}
+        />
         <DottedSeparator className="my-4" />
-        {isLoadingTask ? (
+        {isLoadingTask || isLoadingMembers ? (
           <div className="w-full border rounded-lg h-[200px] flex flex-col items-center justify-center">
             <Loader className="size-5 animate-spin text-muted-foreground"/>
           </div>
