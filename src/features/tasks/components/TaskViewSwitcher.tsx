@@ -71,7 +71,6 @@ export const TaskViewSwitcher = ({
   const onKanbanChange = useCallback((
     tasks: { $id: string; status: TaskStatus;  position: number}[]
   ) => {
-    // console.log("Kanban Tasks Update: ", tasks);
     bulkUpdate({
       json: { tasks }
     })

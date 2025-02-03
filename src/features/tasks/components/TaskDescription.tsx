@@ -16,7 +16,6 @@ export const TaskDescription = ({ task }: TaskDescriptionProps) => {
   const [isEditing, setIsEditing] = useState(false)
   const [value, setValue] = useState(task.description)
   const { mutate, isPending } = useUpdateTask()
-  console.log("Task Description: ", task.description);
 
   useEffect(() => {
     setValue(task.description);
