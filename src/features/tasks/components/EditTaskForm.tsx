@@ -1,8 +1,5 @@
 "use client"
 
-import { useWorkspaceId } from "@/features/workspaces/hooks/useWorkspaceId"
-// import { useRouter } from "next/navigation"
-import { useCreateTask } from "../api/useCreateTask"
 import { useForm } from "react-hook-form"
 import { createTaskSchema } from "../schemas"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -53,7 +50,6 @@ export const EditTaskForm = ({
   projectOptions,
   memberOptions
 }: EditTaskFormProps) => {
-  const workspaceId = useWorkspaceId()
   const { mutate, isPending } = useUpdateTask()
 
   const form = useForm<z.infer<typeof createTaskSchema>>({

@@ -35,7 +35,3 @@ export const getWorkspaces = async () => {
     return { documents: [], total: 0 }
   }
 }
-
-interface GetWorkspaceProps {
-  workspaceId: string
-}

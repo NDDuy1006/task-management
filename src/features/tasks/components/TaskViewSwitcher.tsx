@@ -19,10 +19,11 @@ import { DataTable } from "./DataTable"
 import { columns } from "./Columns"
 import { DataKanban } from "./DataKanban"
 import { TaskStatus } from "../types"
-import { useCallback, useEffect, useMemo } from "react"
+import { useCallback } from "react"
 import { useBulkUpdateTasks } from "../api/useBulkUpdateTasks"
 import { DataCalendar } from "./DataCalendar"
 import { useGetMembers } from "@/features/members/api/useGetMembers"
+import { useProjectId } from "@/features/projects/hooks/useProjectId"
 
 interface TaskViewSwitcherProps {
   currentUserId?: string
@@ -32,7 +33,6 @@ interface TaskViewSwitcherProps {
 
 export const TaskViewSwitcher = ({
   currentUserId,
-  defaultProjectId,
   hideProjectFilter
 }: TaskViewSwitcherProps) => {
   const [view, setView] = useQueryState("task-view", {
@@ -40,6 +40,7 @@ export const TaskViewSwitcher = ({
   })
 
   const workspaceId = useWorkspaceId()
+  const paramProjectId = useProjectId()
 
   const { data: members, isLoading: isLoadingMembers } = useGetMembers({ workspaceId })
   
@@ -60,7 +61,7 @@ export const TaskViewSwitcher = ({
   const { data: tasks, isLoading: isLoadingTask } = useGetTasks({
     workspaceId,
     // these properties make the fetch method call
-    projectId: defaultProjectId || projectId,
+    projectId: paramProjectId || projectId,
     assigneeId: currentMemberId || assigneeId,
     status,
     dueDate

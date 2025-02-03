@@ -9,7 +9,6 @@ import { z } from "zod"
 import { TaskType, TaskStatus } from "../types"
 import { ProjectType } from "@/features/projects/types"
 import { createAdminClient } from "@/lib/appwrite"
-import { MemberType } from "@/features/members/type"
 
 const app = new Hono()
   .get(
