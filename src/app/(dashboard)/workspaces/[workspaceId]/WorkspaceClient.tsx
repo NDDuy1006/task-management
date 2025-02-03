@@ -70,7 +70,7 @@ export const TaskList = ({ data, total }: TaskListProps) => {
       <div className="bg-muted rounded-lg p-4">
         <div className="flex items-center justify-between">
           <p className="text-lg font-semibold">
-            Tasks ({total})
+            Recent Tasks ({total})
           </p>
           <Button
             variant="muted"

@@ -21,6 +21,7 @@ export const useGetWorkspaceAnalytics = ({
       }
 
       const { data } = await response.json()
+      
       return data
     }
   })

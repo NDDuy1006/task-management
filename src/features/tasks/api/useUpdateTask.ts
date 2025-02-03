@@ -20,7 +20,7 @@ export const useUpdateTask = () => {
       if (!response.ok) {
         throw new Error("Failed to update task")
       }
-
+      
       return await response.json()
     },
     onSuccess: ({ data }) => {
