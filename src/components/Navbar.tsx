@@ -17,7 +17,7 @@ const pathnameMap = {
 
 const defaultMap = {
   title: "Home",
-  description: "Monitor all projects and tasks"
+  description: "Monitor highlighted projects and tasks"
 }
 
 export const Navbar = () => {

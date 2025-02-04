@@ -1,6 +1,6 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query"
 import { client } from "@/lib/rpc"
-import { InferResponseType } from "hono";
+import { InferResponseType } from "hono"
 
 interface UseGetProjectAnalyticsProps {
   projectId: string;

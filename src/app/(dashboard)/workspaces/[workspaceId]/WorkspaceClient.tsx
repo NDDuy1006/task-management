@@ -21,6 +21,7 @@ import { ProjectType } from "@/features/projects/types"
 import { ProjectAvatar } from "@/features/projects/components/ProjectAvatar"
 import { MemberType } from "@/features/members/type"
 import { MemberAvatar } from "@/features/members/components/MemberAvatar"
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 
 export const WorkspaceClinet = () => {
   const workspaceId = useWorkspaceId()
@@ -49,8 +50,10 @@ export const WorkspaceClinet = () => {
       <Analytics data={analytics} />
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
         <TaskList data={tasks.documents} total={tasks.total} />
-        <ProjectList data={projects.documents} total={projects.total} />
-        <MemberList data={members.documents} total={members.total} />
+        <div className="flex flex-col gap-4">
+          <ProjectList data={projects.documents} total={projects.total} />
+          <MemberList data={members.documents} total={members.total} />
+        </div>
       </div>
     </div>
   )
@@ -66,7 +69,7 @@ export const TaskList = ({ data, total }: TaskListProps) => {
   const { open: createTask } = useCreateTaskModal()
 
   return (
-    <div className="flex flex-col gap-y-4 col-span-1">
+    <div className="flex flex-col gap-y-4">
       <div className="bg-muted rounded-lg p-4">
         <div className="flex items-center justify-between">
           <p className="text-lg font-semibold">
@@ -81,44 +84,47 @@ export const TaskList = ({ data, total }: TaskListProps) => {
           </Button>
         </div>
         <DottedSeparator className="my-4" />
-        <ul className="flex flex-col gap-y-4">
-          {data.map((task) => (
-            <li key={task.$id}>
-              <Link href={`/workspaces/${workspaceId}/tasks/${task.$id}`}>
-                <Card className="shadow-non rounde-lg hover:opacity-75 transition">
-                  <CardContent className="p-4">
-                    <p className="text-lg font-medium truncate">
-                      {task.name}
-                    </p>
-                    <div className="flex items-center gap-x-2">
-                      <p>
-                        {task.project?.name}
+        <ScrollArea className="rounded-lg whitespace-nowrap shrink-0 h-[460px]">
+          <ul className="flex flex-col gap-y-4">
+            {data.map((task) => (
+              <li key={task.$id}>
+                <Link href={`/workspaces/${workspaceId}/tasks/${task.$id}`}>
+                  <Card className="shadow-non rounde-lg hover:opacity-75 transition">
+                    <CardContent className="p-4">
+                      <p className="text-lg font-medium truncate">
+                        {task.name}
                       </p>
-                      <div className="size-1 rounded-full bg-neutral-3" />
-                      <div className="text-sm text-muted-foreground flex items-center">
-                        <CalendarIcon className="size-3 mr-1" />
-                        <span className="truncate">
-                          Due date: 
-                          {
-                            isPast(new Date(task.dueDate))
-                              ? ` ${formatDistanceToNow(new Date(task.dueDate))} ago`
-                              : ` in ${formatDistanceToNow(new Date(task.dueDate))}`
-                          }
-                        </span>
+                      <div className="flex items-center gap-x-2">
+                        <p>
+                          {task.project?.name}
+                        </p>
+                        <div className="size-1 rounded-full bg-neutral-3" />
+                        <div className="text-sm text-muted-foreground flex items-center">
+                          <CalendarIcon className="size-3 mr-1" />
+                          <span className="truncate">
+                            Due date: 
+                            {
+                              isPast(new Date(task.dueDate))
+                                ? ` ${formatDistanceToNow(new Date(task.dueDate))} ago`
+                                : ` in ${formatDistanceToNow(new Date(task.dueDate))}`
+                            }
+                          </span>
+                        </div>
                       </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </Link>
+                    </CardContent>
+                  </Card>
+                </Link>
+              </li>
+            ))}
+            <li className="text-sm text-muted-foreground text-center hidden first-of-type:block">
+              No tasks found
             </li>
-          ))}
-          <li className="text-sm text-muted-foreground text-center hidden first-of-type:block">
-            No tasks found
-          </li>
-        </ul>
+          </ul>
+          <ScrollBar orientation="horizontal"/>
+        </ScrollArea>
         <Button variant="muted" className="mt-4 w-full">
           <Link href={`/workspaces/${workspaceId}/tasks`}>
-            Show All
+            View All
           </Link>
         </Button>
       </div>
@@ -137,13 +143,13 @@ export const ProjectList = ({ data, total }: ProjectListProps) => {
 
   return (
     <div className="flex flex-col gap-y-4 col-span-1">
-      <div className="bg-white border rounded-lg p-4">
+      <div className="bg-muted border rounded-lg p-4">
         <div className="flex items-center justify-between">
           <p className="text-lg font-semibold">
             Projects ({total})
           </p>
           <Button
-            variant="secondary"
+            variant="muted"
             size="icon"
             onClick={createProject}
           >
@@ -187,15 +193,15 @@ export const MemberList = ({ data, total }: MemberListProps) => {
   const workspaceId = useWorkspaceId()
 
   return (
-    <div className="flex flex-col gap-y-4 col-span-1">
-      <div className="bg-white border rounded-lg p-4">
+    <div className="flex flex-col gap-y-4">
+      <div className="bg-muted border rounded-lg p-4">
         <div className="flex items-center justify-between">
           <p className="text-lg font-semibold">
             Members ({total})
           </p>
           <Button
             asChild
-            variant="secondary"
+            variant="muted"
             size="icon"
           >
             <Link href={`/workspaces/${workspaceId}/members`}>
