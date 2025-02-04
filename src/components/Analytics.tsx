@@ -10,7 +10,6 @@ export const Analytics = ({ data }: ProjectAnalyticsResponsType) => {
     { title: "Completed tasks", value: data.completedTaskCount, difference: data.completedTaskDifference },
     { title: "Overdue tasks", value: data.overdueTaskCount, difference: data.overdueTaskDifference },
     { title: "Incomplete tasks", value: data.incompleteTaskCount, difference: data.incompleteTaskDifference },
-
   ]
   
   return (

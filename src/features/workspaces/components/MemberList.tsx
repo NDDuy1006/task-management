@@ -91,7 +91,7 @@ export const MembersList = () => {
                 />
                 <div className="flex flex-col">
                   <p className="text-sm font-medium">
-                    {member.name}
+                    {member.name} {member.role === MemberRole.ADMIN && `(${MemberRole.ADMIN})`}
                   </p>
                   <p className="text-xs text-muted-foreground">
                     {member.email}

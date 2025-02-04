@@ -23,12 +23,13 @@ import { MemberType } from "@/features/members/type"
 import { MemberAvatar } from "@/features/members/components/MemberAvatar"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 
-export const WorkspaceClinet = () => {
+
+export const WorkspaceClient = () => {
   const workspaceId = useWorkspaceId()
 
   const { data: analytics, isLoading: isLoadingAnalytics } = useGetWorkspaceAnalytics({ workspaceId })
-  const { data: tasks, isLoading: isLoadingTasks } = useGetTasks({ workspaceId })
   const { data: projects, isLoading: isLoadingProjects } = useGetProjects({ workspaceId })
+  const { data: tasks, isLoading: isLoadingTasks } = useGetTasks({ workspaceId })
   const { data: members, isLoading: isLoadingMembers } = useGetMembers({ workspaceId })
 
   const isLoading = 
@@ -84,7 +85,7 @@ export const TaskList = ({ data, total }: TaskListProps) => {
           </Button>
         </div>
         <DottedSeparator className="my-4" />
-        <ScrollArea className="rounded-lg whitespace-nowrap shrink-0 h-[460px]">
+        <ScrollArea className="rounded-lg whitespace-nowrap shrink-0 min-h-[120px] h-[460px]">
           <ul className="flex flex-col gap-y-4">
             {data.map((task) => (
               <li key={task.$id}>
@@ -143,7 +144,7 @@ export const ProjectList = ({ data, total }: ProjectListProps) => {
 
   return (
     <div className="flex flex-col gap-y-4 col-span-1">
-      <div className="bg-muted border rounded-lg p-4">
+      <div className="bg-muted rounded-lg p-4">
         <div className="flex items-center justify-between">
           <p className="text-lg font-semibold">
             Projects ({total})
@@ -194,7 +195,7 @@ export const MemberList = ({ data, total }: MemberListProps) => {
 
   return (
     <div className="flex flex-col gap-y-4">
-      <div className="bg-muted border rounded-lg p-4">
+      <div className="bg-muted rounded-lg p-4">
         <div className="flex items-center justify-between">
           <p className="text-lg font-semibold">
             Members ({total})
