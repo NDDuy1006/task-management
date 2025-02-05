@@ -1,6 +1,5 @@
 "use client"
 
-import { Analytics } from "@/components/Analytics"
 import { PageError } from "@/components/PageError"
 import { PageLoader } from "@/components/PageLoader"
 import { Button } from "@/components/ui/button"

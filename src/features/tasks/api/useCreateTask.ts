@@ -2,11 +2,13 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { InferRequestType, InferResponseType } from "hono"
 import { toast } from "sonner"
 import { client } from "@/lib/rpc"
+import { useWorkspaceId } from "@/features/workspaces/hooks/useWorkspaceId"
 
 type ResponseType = InferResponseType<typeof client.api.tasks["$post"], 200>
 type RequestType = InferRequestType<typeof client.api.tasks["$post"]>
 
 export const useCreateTask = () => {
+  const workspaceId = useWorkspaceId()
   const queryClient = useQueryClient()
   
   const mutation = useMutation<
@@ -26,6 +28,8 @@ export const useCreateTask = () => {
     onSuccess: () => {
       toast.success("Task created!")
       queryClient.invalidateQueries({ queryKey: ["tasks"] })
+      // update analytics
+      queryClient.invalidateQueries({ queryKey: ["workspace-analytics", workspaceId] })
     },
     onError: () => {
       toast.error("Failed to create task")

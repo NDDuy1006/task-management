@@ -25,7 +25,6 @@ export const Navbar = () => {
   const pathname = usePathname()
   const pathnameParts = pathname.split("/")
   const pathnameKey = pathnameParts[3] as keyof typeof pathnameMap
-  console.log(pathnameParts);
 
   const isNavbarHidden = pathnameParts[3] === 'projects' ? "hidden" : "flex"
   
