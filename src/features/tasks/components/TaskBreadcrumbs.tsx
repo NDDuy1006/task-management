@@ -35,7 +35,7 @@ export const TaskBreadcrumbs = ({
 
     mutate({ param: { taskId: task.$id } }, {
       onSuccess: () => {
-        router.push(`/workspace/${workspaceId}/tasks`)
+        router.push(`/workspaces/${workspaceId}/tasks`)
       }
     })
   }
