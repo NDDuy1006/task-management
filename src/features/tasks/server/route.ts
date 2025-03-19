@@ -3,7 +3,7 @@ import { zValidator } from "@hono/zod-validator"
 import { Hono } from "hono"
 import { createTaskSchema } from "../schemas"
 import { getMember } from "@/features/members/utils"
-import { DATABASE_ID, MEMBERS_ID, PROJECTS_ID, TASKS_ID } from "@/config"
+import { DATABASE_ID, IMAGES_BUCKET_ID, MEMBERS_ID, PROJECTS_ID, TASKS_ID } from "@/config"
 import { ID, Query } from "node-appwrite"
 import { z } from "zod"
 import { TaskType, TaskStatus } from "../types"
@@ -137,6 +137,7 @@ const app = new Hono()
     zValidator("json", createTaskSchema),
     async (c) => {
       const user = c.get("user")
+      const storage = c.get("storage")
       const databases = c.get("databases")
       const {
         name,
@@ -144,7 +145,8 @@ const app = new Hono()
         workspaceId,
         projectId,
         dueDate,
-        assigneeId
+        assigneeId,
+        imageUrls
       } = c.req.valid("json")
 
       const member = await getMember({
@@ -168,6 +170,40 @@ const app = new Hono()
         ]
       )
 
+      // forLoop to traverse through the submitted array of images
+      // use IMAGES_BUCKET_ID, ID.unique()
+      let uploadedImageUrls: string[] = []
+
+      if (imageUrls && imageUrls.length > 0) {
+        uploadedImageUrls = await Promise.all(
+          imageUrls.map(async (image: File | string) => {
+            if (image instanceof File) {
+              // Upload the file to Appwrite Storage
+              const file = await storage.createFile(
+                IMAGES_BUCKET_ID,
+                ID.unique(),
+                image
+              );
+
+              // Get the file preview as an ArrayBuffer
+              const arrayBuffer = await storage.getFilePreview(
+                IMAGES_BUCKET_ID,
+                file.$id
+              );
+
+              // Convert the ArrayBuffer to a base64 string
+              const base64String = `data:image/png;base64,${Buffer.from(arrayBuffer).toString("base64")}`;
+
+              return base64String;
+            } else {
+              // If the image is already a string (e.g., a URL or base64 string), return it as-is
+              return image;
+            }
+          })
+        );
+      }
+
+
       const newPosition = highestPositionTask.documents.length > 0
         ? highestPositionTask.documents[0].position + 1000
         : 1000
@@ -183,7 +219,8 @@ const app = new Hono()
           projectId,
           dueDate,
           assigneeId,
-          position: newPosition
+          position: newPosition,
+          imageUrls: uploadedImageUrls
         }
       )
 

@@ -16,5 +16,6 @@ export type TaskType = Models.Document & {
   projectId: string;
   position: number;
   dueDate: string;
-  description?: string
+  description?: string;
+  imageUrls?: string[]
 }

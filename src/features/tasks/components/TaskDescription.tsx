@@ -1,31 +1,29 @@
-import { TaskType } from "../types";
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { DottedSeparator } from "@/components/DottedSeparator"
 import { PencilIcon, XIcon } from "lucide-react";
-
-
-interface TaskDescriptionProps {
-  task: TaskType
-}
-
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useUpdateTask } from "../api/useUpdateTask";
 
-export const TaskDescription = ({ task }: TaskDescriptionProps) => {
+interface TaskDescriptionProps {
+  description?: string
+  id: string
+}
+
+export const TaskDescription = ({ description, id }: TaskDescriptionProps) => {
   const [isEditing, setIsEditing] = useState(false)
-  const [value, setValue] = useState(task.description)
+  const [value, setValue] = useState(description)
   const { mutate, isPending } = useUpdateTask()
 
   useEffect(() => {
-    setValue(task.description);
-  }, [task.description]);
+    setValue(description);
+  }, [description]);
   
   
   const handleSave = () => {
     mutate({
       json: { description: value },
-      param: { taskId: task.$id }
+      param: { taskId: id }
     }, {
       onSuccess: () => {
         setIsEditing(false)

@@ -98,70 +98,68 @@ export const CreateWorkspaceForm = ({ onCancel }: CreateWorkSpaceFormProps) => {
                 control={form.control}
                 name="image"
                 render={({ field }) => (
-                  <div className="flex flex-col gap-y-2">
-                    <div className="flex items-center gap-x-5">
-                      {field.value ? (
-                        <div className="size-[72px] relative rounded-md overflow-hidden">
-                          <Image
-                            src={
-                              typeof field.value === "string"
-                                ? field.value
-                                : URL.createObjectURL(field.value)
-                            }
-                            alt="uploading image"
-                            layout="fill"
-                            objectFit="cover"
-                          />
-                        </div>
-                      ) : (
-                        <Avatar className="size-[72px]">
-                          <AvatarFallback>
-                            <ImageIcon className="size-[36px] text-neutral-400"/>
-                          </AvatarFallback>
-                        </Avatar>
-                      )}
-                      <div className="flex flex-col">
-                        <p className="text-sm">Workspace Icon</p>
-                        <p className="text-sm text-muted-foreground">
-                          JPG, PNG, SVG or JPEG, max 1mb
-                        </p>
-                        <input
-                          className="hidden"
-                          type="file"
-                          accept=".jpg, .png, .jpeg, .svg"
-                          ref={inputRef}
-                          onChange={handleImageChange}
-                          disabled={isPending}
+                  <div className="flex items-center gap-x-5">
+                    {field.value ? (
+                      <div className="size-[72px] relative rounded-md overflow-hidden">
+                        <Image
+                          src={
+                            typeof field.value === "string"
+                              ? field.value
+                              : URL.createObjectURL(field.value)
+                          }
+                          alt="uploading image"
+                          layout="fill"
+                          objectFit="cover"
                         />
-                        {field.value ? (
+                      </div>
+                    ) : (
+                      <Avatar className="size-[72px]">
+                        <AvatarFallback>
+                          <ImageIcon className="size-[36px] text-neutral-400"/>
+                        </AvatarFallback>
+                      </Avatar>
+                    )}
+                    <div className="flex flex-col">
+                      <p className="text-sm">Workspace Icon</p>
+                      <p className="text-sm text-muted-foreground">
+                        JPG, PNG, SVG or JPEG, max 1mb
+                      </p>
+                      <input
+                        className="hidden"
+                        type="file"
+                        accept=".jpg, .png, .jpeg, .svg"
+                        ref={inputRef}
+                        onChange={handleImageChange}
+                        disabled={isPending}
+                      />
+                      {field.value ? (
+                        <Button
+                          type="button"
+                          disabled={isPending}
+                          variant="destructive"
+                          size="xs"
+                          className="w-fit mt-2"
+                          onClick={() => {
+                            field.onChange(null)
+                            if (inputRef.current) {
+                              inputRef.current.value = ""
+                            }
+                          }}
+                        >
+                          Remove Image
+                        </Button>
+                      ) : (
                           <Button
                             type="button"
                             disabled={isPending}
-                            variant="destructive"
+                            variant="teritary"
                             size="xs"
                             className="w-fit mt-2"
-                            onClick={() => {
-                              field.onChange(null)
-                              if (inputRef.current) {
-                                inputRef.current.value = ""
-                              }
-                            }}
+                            onClick={() => inputRef.current?.click()}
                           >
-                            Remove Image
+                            Upload Image
                           </Button>
-                        ) : (
-                            <Button
-                              type="button"
-                              disabled={isPending}
-                              variant="teritary"
-                              size="xs"
-                              className="w-fit mt-2"
-                              onClick={() => inputRef.current?.click()}
-                            >
-                              Upload Image
-                            </Button>
-                        )}
-                      </div>
+                      )}
                     </div>
                   </div>
                 )}

@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-undef */
 /* eslint-disable react-hooks/rules-of-hooks */
 "use client"
 
@@ -32,6 +33,10 @@ import { DatePicker } from "@/components/DatePicker"
 import { MemberAvatar } from "@/features/members/components/MemberAvatar"
 import { TaskStatus } from "../types"
 import { ProjectAvatar } from "@/features/projects/components/ProjectAvatar"
+import Image from "next/image"
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { ImageIcon } from "lucide-react"
+import { useCallback } from "react"
 
 interface CreateTaskFormProps {
   taskStatus?: TaskStatus;
@@ -61,24 +66,62 @@ export const CreateTaskForm = ({
       resolver: zodResolver(createTaskSchema.omit({ workspaceId: true })),
       defaultValues: {
         workspaceId,
+        imageUrls: []
       }
   }) : useForm<z.infer<typeof createTaskSchema>>({
       resolver: zodResolver(createTaskSchema.omit({ workspaceId: true })),
       defaultValues: {
         workspaceId,
-        status: taskStatus
+        status: taskStatus,
+        imageUrls: []
       }
   })
 
-  const onSubmit = (values: z.infer<typeof createTaskSchema>) => {
-    mutate({ json: {...values, workspaceId} }, {
+  const handleImageChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    if (files.length > 0) {
+      form.setValue("imageUrls", files);
+    }
+  }, [form]);
+
+  const removeImage = useCallback((index: number) => {
+    const currentImages = form.getValues("imageUrls") || [];
+    const updatedImages = currentImages.filter((_, i) => i !== index);
+    form.setValue("imageUrls", updatedImages);
+  }, [form]);
+
+  const onSubmit = async (values: z.infer<typeof createTaskSchema>) => {
+    // Convert File objects to base64 strings
+    const finalImages = values.imageUrls?.filter(Boolean) || [];
+    const imagesForBackend = await Promise.all(
+      finalImages.map(async (item) => {
+        if (item instanceof File) {
+          return new Promise<string>((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result as string);
+            reader.onerror = () => reject(new Error("Failed to read file"));
+            reader.readAsDataURL(item);
+          });
+        }
+        return item; // If it's already a string, keep it
+      })
+    );
+
+    const finalValues = {
+      ...values,
+      workspaceId,
+      imageUrls: imagesForBackend,
+    };
+    
+    mutate({
+      json: finalValues
+    }, {
       onSuccess: () => {
         form.reset();
         onCancel?.()
         //TODO: redirect to new task
       }
     })
-    
   }
 
   return (
@@ -242,6 +285,68 @@ export const CreateTaskForm = ({
                           ))}
                         </SelectContent>
                       </Select>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="imageUrls"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Media</FormLabel>
+                    <FormControl>
+                      <div className="space-y-4">
+                        {/* Image Previews */}
+                        {field.value && field.value.length > 0 && (
+                          <div className="flex flex-wrap gap-4">
+                            {field.value.map((item, index) => (
+                              <div key={index} className="relative group">
+                                <div className="size-[72px] relative rounded-md overflow-hidden">
+                                  <Image
+                                    src={
+                                      item instanceof File
+                                        ? URL.createObjectURL(item)
+                                        : typeof item === "string"
+                                        ? item
+                                        : ""
+                                    }
+                                    alt={`preview-${index}`}
+                                    fill
+                                    className="object-cover"
+                                  />
+                                  <button
+                                    type="button"
+                                    onClick={() => removeImage(index)}
+                                    className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                                  >
+                                    ×
+                                  </button>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                        {/* File Input */}
+                        <div className="flex items-center gap-4">
+                          <Input
+                            type="file"
+                            accept="image/*"
+                            multiple
+                            onChange={handleImageChange}
+                            disabled={isPending}
+                            className="w-auto"
+                          />
+                          {(!field.value || field.value.length === 0) && (
+                            <Avatar className="size-[72px] rounded-sm">
+                              <AvatarFallback className="rounded-md">
+                                <ImageIcon className="size-[36px] text-neutral-400"/>
+                              </AvatarFallback>
+                            </Avatar>
+                          )}
+                        </div>
+                      </div>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
