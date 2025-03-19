@@ -6,7 +6,7 @@ import { PageLoader } from "@/components/PageLoader"
 import { useGetTask } from "@/features/tasks/api/useGetTask"
 import { TaskBreadcrumbs } from "@/features/tasks/components/TaskBreadcrumbs"
 import { TaskDescription } from "@/features/tasks/components/TaskDescription"
-import { TaskMedia } from "@/features/tasks/components/TaskMedia"
+// import { TaskMedia } from "@/features/tasks/components/TaskMedia"
 import { TaskOverview } from "@/features/tasks/components/TaskOverview"
 import { useTaskId } from "@/features/tasks/hooks/useTaskId"
 
@@ -29,7 +29,7 @@ export const TaskIdClient = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <TaskOverview task={data} />
         <TaskDescription description={data.description} id={data.$id} />
-        <TaskMedia images={data.imageUrls} id={data.$id}/>
+        {/* <TaskMedia images={data.imageUrls} id={data.$id}/> */}
       </div>
     </div>
   )
