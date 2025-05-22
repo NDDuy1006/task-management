@@ -85,7 +85,9 @@ export const TaskList = ({ data, total }: TaskListProps) => {
           </Button>
         </div>
         <DottedSeparator className="my-4" />
-        <ScrollArea className="rounded-lg whitespace-nowrap shrink-0 min-h-[120px] h-[460px]">
+        <ScrollArea
+          className="rounded-lg whitespace-nowrap shrink-0 min-h-[120px] h-[460px] min-w-full"
+        >
           <ul className="flex flex-col gap-y-4">
             {data.map((task) => (
               <li key={task.$id}>
@@ -99,8 +101,10 @@ export const TaskList = ({ data, total }: TaskListProps) => {
                         <p>
                           {task.project?.name}
                         </p>
-                        <div className="size-1 rounded-full bg-neutral-3" />
-                        <div className="text-sm text-muted-foreground flex items-center">
+                        <div className="size-1 rounded-full bg-neutral-3"/>
+                        <div
+                          className="text-sm text-muted-foreground items-center hidden md:flex"
+                        >
                           <CalendarIcon className="size-3 mr-1" />
                           <span className="truncate">
                             Due date: 
@@ -214,7 +218,7 @@ export const MemberList = ({ data, total }: MemberListProps) => {
         <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {data.map((member) => (
             <li key={member.$id}>
-              <Card className="shadow-non rounde-lg overflow-hidden">
+              <Card className="shadow-non rounded-lg overflow-hidden">
                 <CardContent className="p-3 flex flex-col items-center gap-x-2">
                   <MemberAvatar
                     className="size-12"
@@ -222,7 +226,7 @@ export const MemberList = ({ data, total }: MemberListProps) => {
                   />
                   <div className="flex flex-col items-center overflow-hidden">
                     <p className="text-lg font-medium line-clamp-1">{member.name}</p>
-                    <p className="text-sm text-muted-foreground line-clamp-1">{member.email}</p>
+                    <p className="text-sm text-muted-foreground line-clamp-1 overflow-hidden text-ellipsis">{member.email}</p>
                   </div>
                 </CardContent>
               </Card>
