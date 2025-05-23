@@ -169,7 +169,7 @@ export const ProjectList = ({ data, total }: ProjectListProps) => {
                 <Card className="shadow-non rounde-lg hover:opacity-75 transition">
                   <CardContent className="p-4 flex items-center gap-x-2.5">
                     <ProjectAvatar
-                      className="size-12"
+                      className="size-12 bg-muted min-w-12"
                       fallbackClassname="text-lg"
                       name={project.name}
                       image={project.imageUrl}
