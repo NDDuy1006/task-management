@@ -34,7 +34,11 @@ export const Projects = () => {
                 isActive && "bg-white shad-sm hover:opacity-100 text-primary"
               )}
             >
-              <ProjectAvatar image={item.imageUrl} name={item.name} />
+              <ProjectAvatar
+                className="min-w-5"
+                image={item.imageUrl}
+                name={item.name}
+              />
               <span className="truncate text-sm">{item.name}</span>
             </div>
           </Link>
