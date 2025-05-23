@@ -50,7 +50,7 @@ export const columns: ColumnDef<TaskType>[] = [
       return (
         <div className="flex items-center gap-x-2 text-sm font-medium">
           <ProjectAvatar
-            className="size-6"
+            className="size-6 min-w-6"
             name={project.name}
             image={project.imageUrl}
           />
