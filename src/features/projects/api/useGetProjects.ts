@@ -19,7 +19,8 @@ export const useGetProjects = ({
 
       const { data } = await response.json()
       return data
-    }
+    },
+    enabled: !!workspaceId,
   })
 
   return query
