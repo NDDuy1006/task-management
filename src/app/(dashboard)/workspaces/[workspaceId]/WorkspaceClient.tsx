@@ -94,11 +94,11 @@ export const TaskList = ({ data, total }: TaskListProps) => {
                 <Link href={`/workspaces/${workspaceId}/tasks/${task.$id}`}>
                   <Card className="shadow-non rounde-lg hover:opacity-75 transition">
                     <CardContent className="p-4">
-                      <p className="text-lg font-medium truncate">
+                      <p className="text-lg font-medium max-w-xs truncate">
                         {task.name}
                       </p>
                       <div className="flex items-center gap-x-2">
-                        <p>
+                        <p className="max-w-xs truncate">
                           {task.project?.name}
                         </p>
                         <div className="size-1 rounded-full bg-neutral-3"/>
@@ -169,7 +169,7 @@ export const ProjectList = ({ data, total }: ProjectListProps) => {
                 <Card className="shadow-non rounde-lg hover:opacity-75 transition">
                   <CardContent className="p-4 flex items-center gap-x-2.5">
                     <ProjectAvatar
-                      className="size-12 bg-muted min-w-12"
+                      className="size-12 min-w-12"
                       fallbackClassname="text-lg"
                       name={project.name}
                       image={project.imageUrl}
