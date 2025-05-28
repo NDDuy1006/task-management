@@ -29,6 +29,7 @@ export const WorkspaceClient = () => {
 
   const { data: analytics, isLoading: isLoadingAnalytics } = useGetWorkspaceAnalytics({ workspaceId })
   const { data: projects, isLoading: isLoadingProjects } = useGetProjects({ workspaceId })
+  // error: cannot get tasks when there's no projects
   const { data: tasks, isLoading: isLoadingTasks } = useGetTasks({ workspaceId })
   const { data: members, isLoading: isLoadingMembers } = useGetMembers({ workspaceId })
 
@@ -145,7 +146,6 @@ interface ProjectListProps {
 export const ProjectList = ({ data, total }: ProjectListProps) => {
   const workspaceId = useWorkspaceId()
   const { open: createProject } = useCreateProjectModal()
-
   return (
     <div className="flex flex-col gap-y-4 col-span-1">
       <div className="bg-muted rounded-lg p-4">
